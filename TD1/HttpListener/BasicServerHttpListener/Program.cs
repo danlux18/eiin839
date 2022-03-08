@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
+//Accept
 namespace BasicServerHTTPlistener
 {
     internal class Program

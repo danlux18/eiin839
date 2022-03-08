@@ -36,6 +36,7 @@ namespace Echo
 
     public class handleClient
     {
+        static Encoding enc = Encoding.UTF8;
         TcpClient clientSocket;
         public void startClient(TcpClient inClientSocket)
         {
@@ -45,20 +46,50 @@ namespace Echo
         }
 
 
-
+        /**/
         private void Echo()
         {
             NetworkStream stream = clientSocket.GetStream();
+            MemoryStream memoryStream = new MemoryStream();
             BinaryReader reader = new BinaryReader(stream);
             BinaryWriter writer = new BinaryWriter(stream);
 
-            while (true)
+            byte[] data = new byte[256];
+            int nb_char;
+            do
             {
-
-                string str = reader.ReadString();
-                Console.WriteLine(str);
-                writer.Write(str);
+                nb_char = stream.Read(data, 0, data.Length);
+                if (nb_char == 0)
+                {
+                    Console.WriteLine("client disconnected...");
+                    return;
+                }
+                memoryStream.Write(data, 0, nb_char);
+            } while (stream.DataAvailable);
+            string request = enc.GetString(memoryStream.ToArray());
+            string filecontent = "<p>HELLO MY DEAR</p>";
+            string first;
+            using (var read = new StringReader(request))
+            {
+                first = read.ReadLine();
             }
+            Console.WriteLine(first+"\n");
+            if (first.StartsWith("GET /")){
+                string filename = first.Substring(4, first.Length - 13);
+                Console.WriteLine(filename + "\n");
+                if (filename.Equals("/")){
+                    filecontent = "<title>L'exemple HTML le plus simple</title> <h1> Ceci est un sous - titre de niveau 1 </h1>Bienvenue dans le monde HTML.Ceci est un paragraphe. <p> Et ceci en est un second.</p> <a href = 'index.html'> cliquez ici </a> pour réafficher.";
+                }
+                else if (filename.Equals("/index.html"))
+                {
+                    string env = Environment.GetEnvironmentVariable("HTTP_ROOT");
+                    filecontent = File.ReadAllText(env+"\\index.html");
+                }
+            
+            }
+            Console.WriteLine(filecontent + "\n");
+            stream.Write(enc.GetBytes("HTTP / 1.1 200 OK\nContent-Length: "+filecontent.Length+"\nContent-Type: text/html\nConnection: Close\n\n"+filecontent));
+            stream.Close();
         }
 
 

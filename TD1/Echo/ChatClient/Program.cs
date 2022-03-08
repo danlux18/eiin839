@@ -36,6 +36,8 @@ namespace Echo
 
         }
 
+        
+
         static void Main(string[] args)
         {
             clientSocket = new TcpClient("localhost", 5000);
