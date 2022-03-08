@@ -29,6 +29,27 @@ namespace TD3
         }
       
     }
+    public class Position
+    {
+        public Double latitude { get; set; }
+        public Double longitude { get; set; }
+    }
+
+    public class Availabilities
+    {
+        public int bikes { get; set; }
+        public int stands { get; set; }
+        public int mechanicalBikes { get; set; }
+        public int electricalBikes { get; set; }
+        public int electricalInternalBatteryBikes { get; set; }
+        public int electricalRemovableBatteryBikes { get; set; }
+    }
+
+    public class Stands
+    {
+        public Availabilities availabilities { get; set; }
+        public Double capacity { get; set; }
+    }
 
     public class Station
     {
@@ -36,23 +57,21 @@ namespace TD3
         public String contract_name { get; set; }
         public String name { get; set; }
         public String adress { get; set; }
-        public Double[] position { get; set; }
+        public Position position { get; set; }
         public Boolean banking { get; set; }
         public Boolean bonus { get; set; }
-        
-
-        public List<String> cities { get; set; }
+        public String status { get; set; }
+        public String lastUpdate { get; set; }
+        public Boolean connected { get; set; }
+        public Boolean overflow { get; set; }
+        public String shape { get; set; }
+        public Stands totalStands { get; set; }
+        public Stands mainStands { get; set; }
+        public Stands overflowStands { get; set; }
+ 
         public String toString()
         {
-            String res = "Station : " + name + ", Commercial_Name : " + commercial_name + ", Country code :" + country_code + ", Cities : ";
-            if (cities != null)
-            {
-                foreach (var city in cities)
-                {
-                    res += city + " ";
-                }
-            }
-            return res;
+            return "Station : " + name + ", Contract_Name : " + contract_name + ", Adress :" + adress;
         }
 
     }
@@ -76,15 +95,31 @@ namespace TD3
                 foreach (Contract element in contracts)
                 {
                     Console.WriteLine(element.toString());
-                }*/
+                }######################question 1 */
+                
                 HttpResponseMessage response = await client.GetAsync("https://api.jcdecaux.com/vls/v3/stations?contract="+args[0]+"&apiKey=" + key);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
                 JsonNode json = JsonValue.Parse(responseBody);
                 JsonArray jsonArray = json.AsArray();
+                List<Station> stations = JsonSerializer.Deserialize<List<Station>>(responseBody);
                 double minDistance = Double.PositiveInfinity;
-                string closerStation = "";
+                string closerStation = "EMPTY";
                 GeoCoordinate cliGPS = new GeoCoordinate(Double.Parse(args[1]), Double.Parse(args[2]));
+                Station station;
+                for (int i = 0; i < stations.Count; i++)
+                {
+                    station = stations[i];
+                    GeoCoordinate currentGPS = new GeoCoordinate(station.position.latitude,
+                        station.position.longitude);
+                    double d = currentGPS.GetDistanceTo(cliGPS);
+                    if (d < minDistance)
+                    {
+                        minDistance = d;
+                        closerStation = station.name;
+                    }
+                }
+                /*
                 for (int i = 0; i < jsonArray.Count; i++)
                 {
                     GeoCoordinate currentGPS = new GeoCoordinate(jsonArray[i]["position"]["latitude"].GetValue<Double>(),
@@ -95,8 +130,8 @@ namespace TD3
                         minDistance = d;
                         closerStation = jsonArray[i]["name"].GetValue<string>();
                     }
-                }
-                Console.WriteLine(closerStation);
+                }*/
+                Console.WriteLine("Closer station to coordinate ["+ Double.Parse(args[1])+", "+ Double.Parse(args[2])+"] : "+closerStation);
 
             }
             catch (HttpRequestException e)
@@ -106,6 +141,4 @@ namespace TD3
             }
         }
     }
-
-    
 }
