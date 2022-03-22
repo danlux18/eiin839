@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math_SOAP_Web_Service_Clien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathsLibrary", "..\MathsLibrary\MathsLibrary\MathsLibrary.csproj", "{45F3AE82-599C-4435-BFAE-F28FADA282F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABC_SimpleConsoleClient", "ABC_SimpleConsoleClient\ABC_SimpleConsoleClient.csproj", "{3F213804-090E-4F30-9AC3-2EF8ABEE4939}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{45F3AE82-599C-4435-BFAE-F28FADA282F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45F3AE82-599C-4435-BFAE-F28FADA282F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45F3AE82-599C-4435-BFAE-F28FADA282F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F213804-090E-4F30-9AC3-2EF8ABEE4939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F213804-090E-4F30-9AC3-2EF8ABEE4939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F213804-090E-4F30-9AC3-2EF8ABEE4939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F213804-090E-4F30-9AC3-2EF8ABEE4939}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

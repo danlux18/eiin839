@@ -10,8 +10,11 @@ namespace Math_SOAP_Web_Service_Client
     {
         static void Main(string[] args)
         {
-            var client = new MathServiceReference.MathsOperationsClient();
-            Console.WriteLine(client.Add(1, 45));
+            var client1 = new MathServiceReference.MathsOperationsClient();
+            var client2 = new MathServiceReference.MathsOperationsClient();
+            var client3 = new MathServiceReference.MathsOperationsClient();
+            var client4 = new MathServiceReference.MathsOperationsClient();
+            Console.WriteLine(client1.Add(1, 45));
         }
     }
 }
