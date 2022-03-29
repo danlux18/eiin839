@@ -1,12 +1,15 @@
-# EIIN839 - ECUE Service oriented computing/WS
+# SOC - Dan Nakache
+## TP NOTE - Part II Session 2
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 This repository contains helpers for the exercises and projects of the Service Oriented Computing / Web Services course of Polytech'Nice-Sophia.
+=======
+>>>>>>> e665ce04982d50dda2300ff915b05fb81139b736
 
-To use this repository as a base for your project, fork it (there is a button for that on the top-right corner of the Github page), and use the fork as your own project.
 
-You are also strongly advised to watch the repo (another button on the top-right corner) to be updated when modifications are pushed to it.
 
+<<<<<<< HEAD
 Note : If you need help forking or syncing your fork with the main repository, you can follow [this procedure](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo).
 =======
 ### Structure :
@@ -25,9 +28,55 @@ Le projet est composÃ© des 3 composants suivants :
 ___
 TD1:
 >>>>>>> Stashed changes
+=======
+
+http://localhost:8733/Design_Time_Addresses/MathsLibraryRest/Service1/Add?x=1&y=2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TD1:
+>>>>>>> e665ce04982d50dda2300ff915b05fb81139b736
 
 Question 1:
-Parce qu'il est déjà utilisé, bloqué par l'univ.
+Parce qu'il est dï¿½jï¿½ utilisï¿½, bloquï¿½ par l'univ.
 
 Question 2:
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
@@ -44,6 +93,6 @@ Question 2:
 </html>
 
 Question 3:
-30 à 60 (56 ici)
-11,90s pour 43 requêtes
+30 ï¿½ 60 (56 ici)
+11,90s pour 43 requï¿½tes
 9,70s pour 43 requetes
