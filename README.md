@@ -1,17 +1,6 @@
 # SOC - Dan Nakache
 ## TP NOTE - Part II Session 2
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-This repository contains helpers for the exercises and projects of the Service Oriented Computing / Web Services course of Polytech'Nice-Sophia.
-=======
->>>>>>> e665ce04982d50dda2300ff915b05fb81139b736
-
-
-
-<<<<<<< HEAD
-Note : If you need help forking or syncing your fork with the main repository, you can follow [this procedure](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo).
-=======
 ### Structure :
 Le projet est composé des 3 composants suivants :
 - MathsLibrarySoap : serveur SOAP
@@ -27,53 +16,7 @@ Le projet est composé des 3 composants suivants :
 
 ___
 TD1:
->>>>>>> Stashed changes
-=======
 
-http://localhost:8733/Design_Time_Addresses/MathsLibraryRest/Service1/Add?x=1&y=2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-TD1:
->>>>>>> e665ce04982d50dda2300ff915b05fb81139b736
 
 Question 1:
 Parce qu'il est d�j� utilis�, bloqu� par l'univ.

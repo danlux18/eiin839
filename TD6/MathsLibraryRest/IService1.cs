@@ -15,7 +15,6 @@ namespace MathsLibraryRest
         [OperationContract]
         [WebInvoke(Method = "GET", UriTemplate = "Add?x={x}&y={y}", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped)]
         int Add(int x, int y);
-<<<<<<< HEAD
 
         [OperationContract]
         [WebInvoke(Method = "GET", UriTemplate = "Sub?x={x}&y={y}", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped)]
@@ -24,13 +23,5 @@ namespace MathsLibraryRest
         [OperationContract]
         [WebInvoke(Method = "GET", UriTemplate = "Mult?x={x}&y={y}", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped)]
         int Multiply(int x, int y);
-=======
-        [OperationContract]
-        [WebInvoke(Method = "GET", UriTemplate = "Mult?x={x}&y={y}", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped)]
-        int Multiply(int x, int y);
-        [OperationContract]
-        [WebInvoke(Method = "GET", UriTemplate = "Sub?x={x}&y={y}", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped)]
-        int Subtract(int x, int y);
->>>>>>> e665ce04982d50dda2300ff915b05fb81139b736
     }
 }
