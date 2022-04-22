@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- En haut de la page du navigateur -->
+    <title>Let's go biking'</title>
+    <!-- Fichier Css -->
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">.
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+
+    <div id="title">
+        <h1>SOC Project - Let's go biking !</h1>
+    </div>
+    <div id="start">
+        <h2>Point de départ :</h2>
+        <input name="begin" id="startPoint">
+    </div>
+
+    <div id="end">
+        <h2>Destination :</h2>
+        <input name="arrive" id="endPoint">
+    </div>
+    <br />
+    <button id="getClosestStation" onclick="goBike();">
+        Get closest station
+    </button>
+    <script type="text/javascript" src="main.js"></script>
+    <br />
+    <div id="map" class="mapStyle"></div>
+    <script type="text/javascript" src="map.js"></script>
+</body>
+</html>

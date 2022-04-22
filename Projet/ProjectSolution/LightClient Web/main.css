@@ -1,0 +1,10 @@
+﻿body{
+    background-color: lightskyblue;
+}
+.mapStyle{
+    width: 400px;
+    height: 200px;
+}
+/*.step:not(#step1) {
+    display: none;
+}*/
