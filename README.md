@@ -1,6 +1,8 @@
 # SOC - Dan Nakache
 ## TP NOTE - Part II Session 2
 
+Le fichier solution .sln se trouve dans le dossier TD6 et se nomme : "TP_NOTE_REST_AND_SOAP_WEB_SERVICE.sln".
+
 ### Structure :
 Le projet est composé des 3 composants suivants :
 - MathsLibrarySoap : serveur SOAP
