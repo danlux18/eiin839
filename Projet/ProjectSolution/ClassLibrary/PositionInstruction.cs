@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class Geometry
+    public class PositionInstruction
     {
-        public double[][] coordinates { get; set; }
+        public List<Position> positions;
+        public Step[] instructions;
     }
 }

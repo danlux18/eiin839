@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Availabilities.cs" />
+    <Compile Include="PositionInstruction.cs" />
+    <Compile Include="ResultObject.cs" />
     <Compile Include="FeatureSearch.cs" />
     <Compile Include="GeoJSONSearch.cs" />
     <Compile Include="Coordinate.cs" />

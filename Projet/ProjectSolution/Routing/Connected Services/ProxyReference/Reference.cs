@@ -35,12 +35,12 @@ namespace Routing.ProxyReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IJCDecauxDataChannel : ProxyReference.IJCDecauxData, System.ServiceModel.IClientChannel {
+    public interface IJCDecauxDataChannel : Routing.ProxyReference.IJCDecauxData, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class JCDecauxDataClient : System.ServiceModel.ClientBase<ProxyReference.IJCDecauxData>, ProxyReference.IJCDecauxData {
+    public partial class JCDecauxDataClient : System.ServiceModel.ClientBase<Routing.ProxyReference.IJCDecauxData>, Routing.ProxyReference.IJCDecauxData {
         
         public JCDecauxDataClient() {
         }

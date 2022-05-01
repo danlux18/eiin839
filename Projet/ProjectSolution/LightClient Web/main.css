@@ -1,10 +1,94 @@
 ﻿body{
-    background-color: lightskyblue;
+    background-color: #254B01;
+    color: white;
 }
-.mapStyle{
-    width: 400px;
-    height: 200px;
+.titleStyle{
+	text-align: center;
 }
+#bigBlock {
+	display: flex;
+	justify-content:space-between;
+}
+#blockInput {
+	border-style: inset;
+	border-width: 6px;
+	width: 400px;
+	height: 400px;
+	justify-content: center;
+}
+#start,#end,#getClosestStation,#legende{
+	margin-left: 25px;
+}
+#startPoint,#endPoint{
+	background-color: #CACFD2;
+	width: 300px;
+}
+#getClosestStation{
+	margin-top: 20px;
+}
+#getClosestStation {
+	background-color: #D0D3D4; /* Green */
+	border: none;
+	color: black;
+	padding: 10px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	transition-duration: 0.6s;
+}
+#getClosestStation:hover {
+  background-color: #909497; /* Green */
+}
+#velo{
+	color: #01FF00;
+	font-weight: bold;
+	margin-left: 25px;
+}
+#pied{
+	color: #0086FF;
+	font-weight: bold;
+	margin-left: 25px;
+}
+#blockMap {
+	width: fit-content;
+	height: 400px;
+	align-content: center;
+}
+.mapStyle {
+	width: 900px;
+	height: 400px;
+	border-style: inset;
+	border-width: 6px;
+	
+}
+#blockDisplayInstruction {
+	display:flex;
+	justify-content:space-between;
+}
+.instructionsStyle {
+	background-color: #D0D3D4;
+	border-style: inset;
+	border-width: 6px;
+	width: 400px;
+	height: 120px;
+	color: darkblue;
+	overflow-y: scroll;
+}
+
 /*.step:not(#step1) {
-    display: none;
-}*/
+   	display: none;
+}
+#bloc{
+	display: flex;
+	justify-content: space-between;
+}
+#blocLeft{
+	width: 400px;
+    height: 250px;
+}
+#blocRight{
+	width: 600px;
+    height: 250px;
+}
+

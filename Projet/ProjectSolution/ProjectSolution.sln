@@ -14,6 +14,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Routing", "Routing\Routing.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{154D3263-06BE-482C-804C-59A6632FEF33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeavyClient Stats", "HeavyClient Stats\HeavyClient Stats.csproj", "{1B60BC65-FDBF-4AA2-899D-7F3424E99DE5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{85D4011E-E855-4AA4-BBE6-D610381B2523} = {85D4011E-E855-4AA4-BBE6-D610381B2523}
+		{601474BA-89C4-40BB-BB97-7E014E917DA3} = {601474BA-89C4-40BB-BB97-7E014E917DA3}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +42,10 @@ Global
 		{154D3263-06BE-482C-804C-59A6632FEF33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{154D3263-06BE-482C-804C-59A6632FEF33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{154D3263-06BE-482C-804C-59A6632FEF33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B60BC65-FDBF-4AA2-899D-7F3424E99DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B60BC65-FDBF-4AA2-899D-7F3424E99DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B60BC65-FDBF-4AA2-899D-7F3424E99DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B60BC65-FDBF-4AA2-899D-7F3424E99DE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

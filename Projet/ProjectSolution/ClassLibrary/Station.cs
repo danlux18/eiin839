@@ -7,10 +7,10 @@ public class Station
     public Position position { get; set; }
     public string status { get; set; }
     public bool connected { get; set; }
-    public Stands totalStands { get; set; }
-    public string toString()
+    public Stands mainStands { get; set; }
+    public string ToString()
     {
-        return "Station : " + name + ", Contract_Name : " + contractName;
+        return "Name : "+name+", contract : "+ contractName+", bikes availables : "+ mainStands.availabilities.bikes;
     }
     public Station() { }
 }

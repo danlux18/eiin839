@@ -11,41 +11,44 @@ using System.Threading.Tasks;
 
 namespace Routing
 {
-    // REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service1" à la fois dans le code et le fichier de configuration.
-    public class Routing : IRouting
+    public class RoutingRest : IRoutingRest
     {
         private static string openRouteServiceKey = "5b3ce3597851110001cf624837f5baa075ce448bbee78662285a971d";
         private static string openRouteServiceBase = "https://api.openrouteservice.org/";
         private HttpClient httpClient = new HttpClient();
         private ProxyReference.JCDecauxDataClient proxyClient = new ProxyReference.JCDecauxDataClient();
 
-        public async Task<List<Position>> ComputePath(string start, string end)
+        public async Task<ResultObject> ComputePath(string start, string end)
         {
+            Console.WriteLine("From " + start + " to " + end);
             string startUrl = openRouteServiceBase + "geocode/search?api_key=" + openRouteServiceKey + "&text=" + start + "&size=1";
             string endUrl = openRouteServiceBase + "geocode/search?api_key=" + openRouteServiceKey + "&text=" + end + "&size=1";
 
-            Position startPos = await stringToPosition(startUrl);
-            Position endPos = await stringToPosition(endUrl);
+            Position footStartPosition = await stringToPosition(startUrl);
+            Position footEndPosition = await stringToPosition(endUrl);
 
-            Station starting = findClosestStation(startPos, false);
-            Station ending = findClosestStation(endPos, true);
-            var affiche = "startPos = " + startPos.ToString() + ", station pos = " + starting.position.ToString();
-            List<Position> list = new List<Position>();
-            Position indexStartEnd = null;
-            list.Add(indexStartEnd);
-            list.Add(startPos);
-
-
-            (List<Position> first, double distanceFirst) = await footToBike(startPos, starting.position);
-            List<Position> second = await stationToStation(starting.position, ending.position);
-            (List<Position> third, double distanceSecond) = await BikeToFoot(ending.position, endPos);
             
-            await computeList(list, first, second, third, distanceFirst, distanceSecond);
+            Station stationStart = findClosestStation(footStartPosition, false);
+            Station stationEnd = findClosestStation(footEndPosition, true);
+            Console.WriteLine("Closest station from the start : " + stationStart.ToString());
+            Console.WriteLine("Closest station from the end : " + stationEnd.ToString());
 
-            return list;
+            (PositionInstruction footToBikeList, double footToBikeDistance) = await footToBike(footStartPosition, stationStart.position);
+            PositionInstruction bikeToBike = await stationToStation(stationStart.position, stationEnd.position);
+            (PositionInstruction bikeToFootList, double bikeToFootListDistance) = await BikeToFoot(stationEnd.position, footEndPosition);
+            
+            if(footToBikeList.positions.Count < 1 || bikeToBike.positions.Count < 1 || bikeToFootList.positions.Count < 1)
+            {
+                Console.WriteLine("Problem for the request "+start + " to " + end+", a piece of the path is inexisting !");
+            }
+
+            ResultObject result = await computeList(footToBikeList, bikeToBike, bikeToFootList, footToBikeDistance, bikeToFootListDistance);
+            result.startPosition = footStartPosition;
+
+            return result;
         }
 
-        private async Task<(List<Position>, double)> footToBike(Position startPos, Position destination)
+        private async Task<(PositionInstruction, double)> footToBike(Position startPos, Position destination)
         {
             string api = "v2/directions/";
             string transportType = "foot-walking";
@@ -57,7 +60,7 @@ namespace Routing
 
             HttpResponseMessage response = await httpClient.GetAsync(url);
             GeoJSON geoJSON = null;
-            List<Position> listPos = new List<Position>();
+            PositionInstruction result = new PositionInstruction();
             //double time = 0;
             double distance = 0;
             if (response.IsSuccessStatusCode)
@@ -65,27 +68,32 @@ namespace Routing
                 var response_content = await response.Content.ReadAsStringAsync();
                 geoJSON = JsonSerializer.Deserialize<GeoJSON>(response_content);
                 //time += geoJSON.features[0].properties.summary.duration;
-                distance = geoJSON.features[0].properties.summary.distance;
-                Coordinate[] coordinates = geoJSON.features[0].geometry.coordinates;
+                Feature feature = geoJSON.features[0];
+                List<Position> positions = new List<Position>();
+                distance = feature.properties.summary.distance;
+              
+                double[][] coordinates = geoJSON.features[0].geometry.coordinates;
                 for (int i = 0; i < coordinates.Length; i++)
                 {
-                    listPos.Add(fromGeoCoordinate(coordinates[i].values));
+                    positions.Add(fromGeoCoordinate(coordinates[i]));
                 }
+                result.instructions = feature.properties.segments[0].steps;  
+                result.positions = positions;
             }
             else
             {
-                Console.WriteLine("ERROR LORS DE LA REQUÊTE !");
+                throw new Exception("footToBike error in the request !");
             }
 
-            return (listPos,  distance);
+            return (result,  distance);
         }
 
-        private async Task<List<Position>> stationToStation(Position startPos, Position destination)
+        private async Task<PositionInstruction> stationToStation(Position startPos, Position destination)
         {
             
             string api = "v2/directions/";
             string transportType = "cycling-regular";
-            string extra = "/geojson";
+            string extra = "";
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("start", startPos.ToString());
             parameters.Add("end", destination.ToString());
@@ -93,97 +101,120 @@ namespace Routing
 
             HttpResponseMessage response = await httpClient.GetAsync(url);
             GeoJSON geoJSON = null;
-            List<Position> listPos = new List<Position>();
-            if (response.IsSuccessStatusCode)
-            {
-                geoJSON = JsonSerializer.Deserialize<GeoJSON>(await response.Content.ReadAsStringAsync());
-                Coordinate[] coordinates = geoJSON.features[0].geometry.coordinates;
-                for (int i = 0; i < coordinates.Length; i++)
-                {
-                    listPos.Add(fromGeoCoordinate(coordinates[i].values));
-                }
-            }
-            else
-            {
-                Console.WriteLine("ERROR LORS DE LA REQUÊTE !");
-            }
-
-            return listPos;
-        }
-
-        private async Task<(List<Position>, double)> BikeToFoot(Position startPos, Position destination)
-        {
-            string api = "v2/directions/";
-            string transportType = "foot-walking";
-            string extra = "/geojson";
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("start", startPos.ToString());
-            parameters.Add("end", destination.ToString());
-            string url = urlCreation(api, transportType, extra, parameters);
-
-            HttpResponseMessage response = await httpClient.GetAsync(url);
-            GeoJSON geoJSON = null;
-            List<Position> listPos = new List<Position>();
+            PositionInstruction result = new PositionInstruction();
+            //double time = 0;
             double distance = 0;
             if (response.IsSuccessStatusCode)
             {
-                geoJSON = JsonSerializer.Deserialize<GeoJSON>(await response.Content.ReadAsStringAsync());
-                distance = geoJSON.features[0].properties.summary.distance;
-                Coordinate[] coordinates = geoJSON.features[0].geometry.coordinates;
+                var response_content = await response.Content.ReadAsStringAsync();
+                geoJSON = JsonSerializer.Deserialize<GeoJSON>(response_content);
+                //time += geoJSON.features[0].properties.summary.duration;
+                Feature feature = geoJSON.features[0];
+                List<Position> positions = new List<Position>();
+                distance = feature.properties.summary.distance;
+
+                double[][] coordinates = geoJSON.features[0].geometry.coordinates;
                 for (int i = 0; i < coordinates.Length; i++)
                 {
-                    listPos.Add(fromGeoCoordinate(coordinates[i].values));
+                    positions.Add(fromGeoCoordinate(coordinates[i]));
                 }
+                result.instructions = feature.properties.segments[0].steps;
+                result.positions = positions;
             }
             else
             {
-                Console.WriteLine("ERROR LORS DE LA REQUÊTE !");
+                throw new Exception("stationToStation error in the request !");
             }
 
-            return (listPos, distance);
+            return result;
         }
 
-        private async Task computeList(List<Position> list, List<Position> first, List<Position> second, List<Position> third, double distanceFirst, double distanceSecond)
-        { 
-            Position index = list[0];
-            //Check if taking a bike is worth than walking : check for the smallest distance amount to walk
-            if (await worthIt(first, second, third, distanceFirst, distanceSecond))
-            {
-                index.latitude = first.Count;
-                index.longitude = first.Count + second.Count;
-                list.AddRange(first);
-                list.AddRange(second);
-                list.AddRange(third);
-            }
-            else
-            {
-                index.latitude = first.Count + third.Count;
-                index.longitude = first.Count + third.Count;
-                list.AddRange(first);
-                list.AddRange(third);
-            }
-        }
-
-        private async Task<bool> worthIt(List<Position> first, List<Position> second, List<Position> third, double distanceFirst, double distanceSecond)
+        private async Task<(PositionInstruction, double)> BikeToFoot(Position startPos, Position destination)
         {
-            //Plutôt comparer la distance de marche entre les 2
             string api = "v2/directions/";
             string transportType = "foot-walking";
-            string extra = "/geojson";
+            string extra = "";
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("start", startPos.ToString());
+            parameters.Add("end", destination.ToString());
+            string url = urlCreation(api, transportType, extra, parameters);
+
+            HttpResponseMessage response = await httpClient.GetAsync(url);
+            GeoJSON geoJSON = null;
+            PositionInstruction result = new PositionInstruction();
+            //double time = 0;
+            double distance = 0;
+            if (response.IsSuccessStatusCode)
+            {
+                var response_content = await response.Content.ReadAsStringAsync();
+                geoJSON = JsonSerializer.Deserialize<GeoJSON>(response_content);
+                //time += geoJSON.features[0].properties.summary.duration;
+                Feature feature = geoJSON.features[0];
+                List<Position> positions = new List<Position>();
+                distance = feature.properties.summary.distance;
+
+                double[][] coordinates = geoJSON.features[0].geometry.coordinates;
+                for (int i = 0; i < coordinates.Length; i++)
+                {
+                    positions.Add(fromGeoCoordinate(coordinates[i]));
+                }
+                result.instructions = feature.properties.segments[0].steps;
+                result.positions = positions;
+            }
+            else
+            {
+                throw new Exception("bikeToFoot error in the request !");
+            }
+
+            return (result, distance);
+        }
+
+        private async Task<ResultObject> computeList(PositionInstruction first, PositionInstruction second, PositionInstruction third, double distanceFirst, double distanceSecond)
+        { 
+            //Check if taking a bike is worth than walking : check for the smallest distance amount to walk
+            ResultObject result = new ResultObject();
+            (bool worth, PositionInstruction directFoot) = await worthIt(first.positions, second.positions, third.positions, distanceFirst, distanceSecond);
+            result.worthIt = worth;
+            result.footToFoot = directFoot;
+            result.footToStation = first;
+            result.stationToSation = second;
+            result.sationToFoot = third;
+            return result;
+        }
+
+        private async Task<(bool, PositionInstruction)> worthIt(List<Position> first, List<Position> second, List<Position> third, double distanceFirst, double distanceSecond)
+        {
+            //Plutôt comparer la distance de marche entre les 2
+            PositionInstruction positionInstruction = new PositionInstruction();
+            string api = "v2/directions/";
+            string transportType = "foot-walking";
+            string extra = "";
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("start", first[0].ToString());
             parameters.Add("end", third[third.Count-1].ToString());
             string url = urlCreation(api, transportType, extra, parameters);
 
-            HttpResponseMessage response = httpClient.GetAsync(url).Result;
+            HttpResponseMessage response = await httpClient.GetAsync(url);
+            //HttpResponseMessage response = httpClient.GetAsync(url).Result;
             if(!response.IsSuccessStatusCode)
             {
                 throw new Exception("Error request for api.openrouteservice.org !");
             }
-            GeoJSON geo = JsonSerializer.Deserialize<GeoJSON>(await response.Content.ReadAsStringAsync());
-            double distanceDirect = geo.features[0].properties.summary.distance;
-          
-            return distanceFirst + distanceSecond < distanceDirect;
+            GeoJSON geoJSON = JsonSerializer.Deserialize<GeoJSON>(await response.Content.ReadAsStringAsync());
+            Feature feature = geoJSON.features[0];
+            List<Position> positions = new List<Position>();
+            double distanceDirect = feature.properties.summary.distance;
+            bool worth = distanceFirst + distanceSecond < distanceDirect;
+            
+            double[][] coordinates = feature.geometry.coordinates;
+            for (int i = 0; i < coordinates.Length; i++)
+            {
+                positions.Add(fromGeoCoordinate(coordinates[i]));
+            }
+            positionInstruction.instructions = feature.properties.segments[0].steps;
+            positionInstruction.positions = positions;
+
+            return (worth, positionInstruction);
         }
 
         private Station findClosestStation(Position startPos, bool takeABike)
@@ -222,8 +253,8 @@ namespace Routing
                 {
                     throw new Exception("Null in findClosestStation ! ");
                 }
-                if ((takeABike && updateStation.totalStands.availabilities.bikes > 0) ||
-                    !takeABike && updateStation.totalStands.availabilities.stands > 0)
+                if ((takeABike && updateStation.mainStands.availabilities.bikes > 0) ||
+                    !takeABike && updateStation.mainStands.availabilities.stands > 0)
                 {
                     result = updateStation;
                     break;
@@ -238,7 +269,8 @@ namespace Routing
             HttpResponseMessage response = await httpClient.GetAsync(adress);
 
             if (response.IsSuccessStatusCode) {
-                GeoJSONSearch geo = JsonSerializer.Deserialize<GeoJSONSearch>(response.Content.ReadAsStringAsync().Result);
+                GeoJSONSearch geo = JsonSerializer.Deserialize<GeoJSONSearch>(await response.Content.ReadAsStringAsync());
+                //GeoJSONSearch geo = JsonSerializer.Deserialize<GeoJSONSearch>(response.Content.ReadAsStringAsync().Result);
 
                 position.latitude = geo.features[0].geometry.coordinates[1];
                 position.longitude = geo.features[0].geometry.coordinates[0];
