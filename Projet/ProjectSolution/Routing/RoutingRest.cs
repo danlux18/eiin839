@@ -45,6 +45,8 @@ namespace Routing
             ResultObject result = await computeList(footToBikeList, bikeToBike, bikeToFootList, footToBikeDistance, bikeToFootListDistance);
             result.startPosition = footStartPosition;
 
+            Console.WriteLine("End of the request : From " + start + " to " + end);
+
             return result;
         }
 

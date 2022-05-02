@@ -17,6 +17,7 @@ namespace Routing
             restService.Open();
             Console.WriteLine("Routing Rest ready !");
             Console.WriteLine("Launching Routing Soap...");
+            Console.WriteLine("ROUTING SOAP CONNECTING TO ROUTING REST : ");
             ServiceHost soapService = new ServiceHost(typeof(RoutingSoap));
             soapService.Open();
             Console.WriteLine("Routing Soap ready !");  

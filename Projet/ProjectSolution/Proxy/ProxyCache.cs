@@ -16,6 +16,7 @@ namespace Proxy
 
         public async Task<T> Get(string CacheItemName)
         {
+            Console.WriteLine("Get without expiration : "+CacheItemName);
             var item = cache.Get(CacheItemName);
             if (item == null)
             {
@@ -27,6 +28,7 @@ namespace Proxy
 
         public async Task<T> Get(string CacheItemName, double dt_seconds)
         {
+            Console.WriteLine("Get with "+dt_seconds+" seconds : " + CacheItemName);
             var item = cache.Get(CacheItemName);
             if (item == null)
             {

@@ -30,8 +30,9 @@ function callAPI(url, requestType, params, finishHandler) {
 
 function displayResult() {
     if (this.status !== 200) {
-        console.log("Error, didn't succed with th request.");
-        console.log(this);
+        //console.log("Error, didn't succed with th request.");
+        //console.log(this);
+        window.alert("Invalid request, error code : " + this.status+", error message :" + this.statusText);
     } else {
         result = JSON.parse(this.responseText).ComputePathResult;
         console.log("Success");
@@ -80,7 +81,7 @@ function drawMap(worthIt, positionList) {
     // Configure the style of the line
     var footLineStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({
-            color: '#0086FF',
+            color: 'deepskyblue',
             width: 3
         })
     });

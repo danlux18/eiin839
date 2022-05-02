@@ -55,9 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Connected Services\RoutingSoapReference\HeavyClient_Stats.RoutingSoapReference.ResultObject.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Connected Services\RoutingSoapReference\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -71,6 +68,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\RoutingSoapReference\RoutingSoap.wsdl" />
+    <None Include="Properties\DataSources\ClassLibrary.ResultObject.datasource" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

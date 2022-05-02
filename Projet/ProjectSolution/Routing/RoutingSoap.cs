@@ -11,13 +11,14 @@ namespace Routing
 {
     public class RoutingSoap : IRoutingSoap
     {
-        private HttpClient httpClient = new HttpClient();
         RoutingRest rest = new RoutingRest();
+        private string endpointAdress = "http://localhost:8733/Design_Time_Addresses/Routing/ServiceSoap/secondService";
         public async Task<ResultObject> computePath(string start, string end)
         {
+            Console.WriteLine("Compute path from Soap Service : start = "+start+" ,end = "+end);
             ResultObject result = null;
-            result = await rest.ComputePath(start, end);   
-            Console.WriteLine(result.ToString());
+            result = await rest.ComputePath(start, end);
+            Console.WriteLine("Request from "+start + " to " + end+" has finish !");
             return result;
         }
     }

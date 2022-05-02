@@ -14,5 +14,16 @@ namespace ClassLibrary
         public PositionInstruction stationToSation { get; set; }
         public PositionInstruction sationToFoot { get; set; }
         public PositionInstruction footToFoot { get; set; }
+
+        override
+        public string ToString()
+        {
+            return "WorthIt : " + worthIt +
+                   ",\n StartPosition : " + startPosition +
+                   ",\n FootToStation : " + footToStation +
+                   ",\n StationToSation : " + stationToSation +
+                   ",\n SationToFoot : " + sationToFoot +
+                   ",\n FootToFoot : " + startPosition;
+        }
     }
 }

@@ -11,4 +11,5 @@ namespace ClassLibrary
         public Property properties { get; set; }
         public Geometry geometry { get; set; }
     }
+   
 }

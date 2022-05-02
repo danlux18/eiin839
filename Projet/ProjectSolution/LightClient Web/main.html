@@ -11,35 +11,34 @@
 <body>
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
     <div id="title" class="titleStyle">
-        <h1> <hr>Projet de Soc - Let's go biking ! <hr> </h1>
+        <h1> <hr>Soc Project - Let's go biking ! <hr> </h1>
     </div>
     <div id="divinityBlock">
         <div id="bigBlock">
 
             <div id="blockInput">
                 <div id="start">
-                    <h2>Départ :</h2>
+                    <h2>Starting point :</h2>
                     <input name="begin" id="startPoint">
                 </div>
 
                 <div id="end">
-                    <h2>Destination :</h2>
+                    <h2>Ending point :</h2>
                     <input name="arrive" id="endPoint">
                 </div>
                 <br />
                 <button id="getClosestStation" onclick="goBike();">
-                    Chercher un itinéraire en vélo !
+                    Search a cycle itinerary !
                 </button>
                 <div id="legende">
-                    <h2> Légende : </h2>
-                    <div id="velo">VÉLO</div>
+                    <h2> Map legend : </h2>
+                    <div id="velo">CYCLE</div>
                     <br>
-                    <div id="pied">PIÉTON</div>
+                    <div id="pied">PEDESTRIAN</div>
                 </div>
             </div>
             <div id="blockMap">
                 <script type="text/javascript" src="main.js"></script>
-                <!--<br />-->
                 <div id="map" class="mapStyle"></div>
                 <script type="text/javascript" src="map.js"></script>
             </div>

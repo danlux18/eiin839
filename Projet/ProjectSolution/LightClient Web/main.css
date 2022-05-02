@@ -1,5 +1,5 @@
 ﻿body{
-    background-color: #254B01;
+    background-color: seagreen;
     color: white;
 }
 .titleStyle{
@@ -45,8 +45,8 @@
 	font-weight: bold;
 	margin-left: 25px;
 }
-#pied{
-	color: #0086FF;
+#pied {
+	color: deepskyblue;
 	font-weight: bold;
 	margin-left: 25px;
 }
